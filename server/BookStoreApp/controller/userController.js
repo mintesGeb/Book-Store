@@ -18,11 +18,28 @@ exports.showCart = (req, res, next) => {
   res.json({ cart: user.cart });
 };
 
+exports.signUp = (req, res, next) => {
+  let newUser = new User(
+    null,
+    req.body.fullname,
+    req.body.username,
+    req.body.password
+  ).signUp();
+  res.json({ newUser });
+};
+
 exports.login = (req, res, next) => {
-  const newUser = new User(req.body.username, req.body.password, null).login();
+  console.log(req.body);
+  const newUser = new User(
+    null,
+    null,
+    req.body.username,
+    req.body.password
+  ).login();
 
   if (newUser) {
     //generateToken
+    console.log("token now");
     let token = jwt.sign(
       { username: newUser.username, role: newUser.role },
       secret

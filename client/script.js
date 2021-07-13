@@ -48,6 +48,7 @@ function displayHomePage() {
   document.getElementById("enter-id-msg").style.display = "none";
   document.getElementById("cart-display").style.display = "none";
   cartImg.style.display = "block";
+  cartItems.style.display = "block";
 }
 
 function displayLoginPage() {
@@ -57,6 +58,7 @@ function displayLoginPage() {
   document.getElementById("enter-id-msg").style.display = "none";
   document.getElementById("cart-display").style.display = "none";
   cartImg.style.display = "none";
+  cartItems.style.display = "none";
 }
 
 function showForm() {
@@ -382,12 +384,18 @@ async function showMyCartItems() {
   console.log(data.cart);
   allBooksDisplay.style.opacity = "30%";
   document.getElementById("cart-display").style.display = "block";
-
+  let priceCart = 0;
   data.cart.forEach((bookId) => {
     getBookById(bookId).then((forDisplay) => {
       displayBooksOnCart(forDisplay);
+
+      priceCart += forDisplay.price;
     });
   });
+
+  let totalPrice = document.createElement("p");
+  totalPrice.innerHTML = `${priceCart}`;
+  document.getElementById("cart-display").appendChild(totalPrice);
 }
 
 async function checkCart() {

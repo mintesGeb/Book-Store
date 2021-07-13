@@ -1,10 +1,26 @@
 class User {
-  constructor(username, password, role = "member") {
+  constructor(id, fullname, username, password, role = "member") {
+    this.id = id;
+    this.fullname = fullname;
     this.username = username;
     this.password = password;
     this.role = role;
     this.cart = [];
     this.Order = [];
+  }
+  signUp() {
+    this.id = count;
+    this.role = "member";
+    const checkUsername = users.findIndex(
+      (user) => user.username == this.username
+    );
+    if (checkUsername > -1) {
+      throw Error("Username Already Exist");
+    } else {
+      users.push(this);
+      count++;
+      return this;
+    }
   }
   login() {
     return users.find(
@@ -26,8 +42,8 @@ class User {
 }
 
 let users = [
-  new User("mintes", "mintes123", "admin"),
-  new User("jossy", "jossy123", "member"),
+  new User("1", "mintes Gebre", "mintes", "mintes123", "admin"),
+  new User("2", "jossy tekle", "jossy", "jossy123", "member"),
 ];
-
+let count = 3;
 module.exports = User;
