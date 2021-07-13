@@ -32,6 +32,9 @@ const selectedBooks = [];
 const deleteUpdateId = document.getElementById("delete-update-id");
 
 const delUpAddDiv = document.getElementById("up-del-btn-div");
+const addToCartBtn = document.querySelector(".add-to-cart");
+const cartImg = document.getElementById("cart-img");
+const cartItems = document.getElementById("cart-items");
 
 let activeForm;
 
@@ -43,6 +46,8 @@ function displayHomePage() {
   document.getElementById("search").style.display = "block";
   infoForm.style.display = "none";
   document.getElementById("enter-id-msg").style.display = "none";
+  document.getElementById("cart-display").style.display = "none";
+  cartImg.style.display = "block";
 }
 
 function displayLoginPage() {
@@ -50,6 +55,8 @@ function displayLoginPage() {
   document.getElementById("logoutBtn").style.display = "none";
   document.getElementById("search").style.display = "none";
   document.getElementById("enter-id-msg").style.display = "none";
+  document.getElementById("cart-display").style.display = "none";
+  cartImg.style.display = "none";
 }
 
 function showForm() {
@@ -57,6 +64,8 @@ function showForm() {
 }
 
 window.onload = function () {
+  checkCart();
+  document.getElementById("cart-display").style.display = "none";
   if (sessionStorage.getItem("accessToken")) {
     displayHomePage();
     getAllBooks();
@@ -84,12 +93,15 @@ window.onload = function () {
     }
   };
   window.onclick = (e) => {
+    document.getElementById("cart-display").style.display = "none";
+    allBooksDisplay.style.opacity = "100%";
     if (e.target.getAttribute("class") == "book-icon") {
       selectBook(e);
     } else if (e.target.getAttribute("class").split(" ")[0] == "add-to-cart") {
       addToCart(e);
     }
   };
+
   addBookBtn.onclick = () => {
     activeForm = "add";
     showForm();
@@ -116,9 +128,11 @@ window.onload = function () {
       document.getElementById("enter-id-msg").style.display = "block";
     }
   };
+  cartImg.onclick = showMyCartItems;
 };
 
 async function login() {
+  event.preventDefault();
   let response = await fetch("http://localhost:5000/login", {
     method: "POST",
     headers: {
@@ -249,9 +263,26 @@ function addToCart(e) {
   console.log();
   if (e.target.getAttribute("class").split(" ")[0] == "add-to-cart") {
     let id = e.target.getAttribute("id").split("-")[0];
-    console.log(id, "add to cart");
+    console.log(
+      "add to cart: " + id + " " + sessionStorage.getItem("username")
+    );
+    const reqObj = { username: sessionStorage.getItem("username"), bookId: id };
+    addToCartRequest(reqObj);
   }
 }
+async function addToCartRequest(objBody) {
+  const response = await fetch("http://localhost:5000/cart/addtocart", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: "Bearer " + sessionStorage.getItem("token"),
+    },
+    body: JSON.stringify(objBody),
+  });
+  const data = await response.json();
+  console.log(data.cart);
+}
+
 async function getBookById(bookID) {
   try {
     const response = await fetch(`http://localhost:5000/books/${bookID}`, {
@@ -336,4 +367,50 @@ async function updateBook() {
   formElements.forEach((element) => {
     element.value = "";
   });
+}
+
+async function showMyCartItems() {
+  document.getElementById("cart-display").innerHTML = "";
+  let user = sessionStorage.getItem("username");
+  const response = await fetch(`http://localhost:5000/cart/${user}`, {
+    headers: {
+      "Content-Type": "application/json",
+      authorization: "bearer " + sessionStorage.getItem("accessToken"),
+    },
+  });
+  const data = await response.json();
+  console.log(data.cart);
+  allBooksDisplay.style.opacity = "30%";
+  document.getElementById("cart-display").style.display = "block";
+
+  data.cart.forEach((bookId) => {
+    getBookById(bookId).then((forDisplay) => {
+      displayBooksOnCart(forDisplay);
+    });
+  });
+}
+
+async function checkCart() {
+  let user = sessionStorage.getItem("username");
+  const response = await fetch(`http://localhost:5000/cart/${user}`, {
+    headers: {
+      "Content-Type": "application/json",
+      authorization: "bearer " + sessionStorage.getItem("accessToken"),
+    },
+  });
+  const data = await response.json();
+  console.log(data.cart);
+  if (data.cart.length > 0) {
+    cartItems.style.display = "block";
+    cartItems.innerHTML = data.cart.length;
+  } else {
+    cartItems.style.display = "none";
+  }
+}
+
+function displayBooksOnCart(bookObj) {
+  let textDisplay = document.createElement("p");
+  textDisplay.innerHTML = `-<b> ${bookObj.title}</b>, by ${bookObj.author} - $${bookObj.price}`;
+
+  document.getElementById("cart-display").appendChild(textDisplay);
 }

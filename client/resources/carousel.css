@@ -136,3 +136,34 @@ body {
   color: orange;
   margin-right: 20px;
 }
+#cart-img {
+  /* border: solid black 1px; */
+  width: 50px;
+  height: 50px;
+  position: relative;
+  left: 60%;
+}
+#cart-img:hover {
+  /* border: solid black 1px; */
+  background-color: palevioletred;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  left: 60%;
+}
+#cart-display {
+  border: palevioletred solid 1px;
+  width: 350px;
+  height: 400px;
+  position: absolute;
+  left: 50%;
+  padding: 20px;
+}
+#cart-items {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: palevioletred;
+  position: absolute;
+  left: 63.7%;
+  top: 60px;
+}

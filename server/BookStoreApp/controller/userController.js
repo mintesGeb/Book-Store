@@ -3,6 +3,21 @@ const jwt = require("jsonwebtoken");
 
 const secret = "top-secret";
 
+exports.addToCart = (req, res, next) => {
+  User.addToCart(req.body.username, req.body.bookId);
+  let userUpdated = User.showUser(req.body.username);
+  res.json({ cart: userUpdated.cart });
+};
+exports.removeFromCart = (req, res, next) => {
+  User.removeFromCart(req.body.username, req.body.bookId);
+  let userUpdated = User.showUser(req.body.username);
+  res.json({ cart: userUpdated.cart });
+};
+exports.showCart = (req, res, next) => {
+  let user = User.showUser(req.params.id);
+  res.json({ cart: user.cart });
+};
+
 exports.login = (req, res, next) => {
   const newUser = new User(req.body.username, req.body.password, null).login();
 

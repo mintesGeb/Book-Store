@@ -4,6 +4,9 @@ const userController = require("../controller/userController");
 
 /* GET users listing. */
 router.post("/login", userController.login);
+router.post("/cart/addtocart", userController.addToCart);
+router.get("/cart/:id", userController.showCart);
+router.post("/cart/removefromcart", userController.removeFromCart);
 router.use("/", userController.authorize);
 
 module.exports = router;
