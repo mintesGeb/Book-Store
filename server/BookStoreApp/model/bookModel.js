@@ -2,11 +2,13 @@ let books = [];
 let count = 0;
 
 class Book {
-  constructor(id, title, author, isbn) {
+  constructor(id, title, author, isbn, price, description) {
     this._id = id;
     this.title = title;
     this.author = author;
     this.isbn = isbn;
+    this.price = price;
+    this.description = description;
   }
   static fetchAll() {
     return books;
@@ -43,4 +45,24 @@ class Book {
     }
   }
 }
+
+let bookEg = new Book(
+  null,
+  "mylife and walk",
+  "mintes",
+  "232165464",
+  "20",
+  "self Development"
+);
+let bookEg2 = new Book(
+  null,
+  "walk with him",
+  "Robs",
+  "65465865464",
+  "50",
+  "Spiritual"
+);
+
+bookEg.save();
+bookEg2.save();
 module.exports = Book;

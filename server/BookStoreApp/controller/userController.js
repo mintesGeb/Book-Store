@@ -4,18 +4,15 @@ const jwt = require("jsonwebtoken");
 const secret = "top-secret";
 
 exports.login = (req, res, next) => {
-  const newUser = new User(
-    req.body.username,
-    req.body.password,
-    req.body.role
-  ).login();
+  const newUser = new User(req.body.username, req.body.password, null).login();
+
   if (newUser) {
     //generateToken
     let token = jwt.sign(
       { username: newUser.username, role: newUser.role },
       secret
     );
-    res.json({ token });
+    res.json({ token, role: newUser.role, username: newUser.username });
   } else {
     res.json({ error: "invalid username or password" });
   }
