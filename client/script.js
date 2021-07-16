@@ -36,9 +36,15 @@ const addToCartBtn = document.querySelector(".add-to-cart");
 const cartImg = document.getElementById("cart-img");
 const cartItems = document.getElementById("cart-items");
 
+const welcome = document.getElementById("welcome");
+
+const orderBtn = document.getElementById("order-btn");
 let activeForm;
 
+let loginPage;
+
 function displayHomePage() {
+  loginPage = false;
   document.getElementById("shopping").style.display = "block";
   document.getElementById("loginForm").style.display = "none";
   document.getElementById("logoutBtn").style.display = "block";
@@ -49,9 +55,12 @@ function displayHomePage() {
   document.getElementById("cart-display").style.display = "none";
   cartImg.style.display = "block";
   cartItems.style.display = "block";
+  document.getElementById("welcome-msg").innerHTML =
+    "<h1>Our list of Books </h1>";
 }
 
 function displayLoginPage() {
+  loginPage = true;
   document.getElementById("shopping").style.display = "none";
   document.getElementById("logoutBtn").style.display = "none";
   document.getElementById("search").style.display = "none";
@@ -59,6 +68,8 @@ function displayLoginPage() {
   document.getElementById("cart-display").style.display = "none";
   cartImg.style.display = "none";
   cartItems.style.display = "none";
+  document.getElementById("welcome-msg").innerHTML =
+    "<h1>Welcome to our book store</h1>";
 }
 
 function showForm() {
@@ -101,6 +112,8 @@ window.onload = function () {
       selectBook(e);
     } else if (e.target.getAttribute("class").split(" ")[0] == "add-to-cart") {
       addToCart(e);
+    } else if (e.target.getAttribute("class").split(" ")[0] == "remove-cart") {
+      removeFromCart(e);
     }
   };
 
@@ -131,6 +144,8 @@ window.onload = function () {
     }
   };
   cartImg.onclick = showMyCartItems;
+
+  orderBtn.onclick = showOrderHistory;
 };
 
 async function login() {
@@ -162,6 +177,7 @@ async function login() {
 function logout() {
   sessionStorage.removeItem("accessToken");
   location.reload();
+  cartItems.style.display = "none";
 }
 
 async function submitBook() {
@@ -261,29 +277,6 @@ function selectBook(e) {
     selectedBooks.push(getBookById(id));
   }
 }
-function addToCart(e) {
-  console.log();
-  if (e.target.getAttribute("class").split(" ")[0] == "add-to-cart") {
-    let id = e.target.getAttribute("id").split("-")[0];
-    console.log(
-      "add to cart: " + id + " " + sessionStorage.getItem("username")
-    );
-    const reqObj = { username: sessionStorage.getItem("username"), bookId: id };
-    addToCartRequest(reqObj);
-  }
-}
-async function addToCartRequest(objBody) {
-  const response = await fetch("http://localhost:5000/cart/addtocart", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: "Bearer " + sessionStorage.getItem("token"),
-    },
-    body: JSON.stringify(objBody),
-  });
-  const data = await response.json();
-  console.log(data.cart);
-}
 
 async function getBookById(bookID) {
   try {
@@ -294,7 +287,7 @@ async function getBookById(bookID) {
       },
     });
     const data = await response.json();
-    console.log(data.result);
+    // console.log(data.result);
     return data.result;
   } catch (err) {
     console.log(err);
@@ -370,6 +363,67 @@ async function updateBook() {
     element.value = "";
   });
 }
+function addToCart(e) {
+  console.log();
+  if (e.target.getAttribute("class").split(" ")[0] == "add-to-cart") {
+    let id = e.target.getAttribute("id").split("-")[0];
+    console.log(
+      "add to cart: " + id + " " + sessionStorage.getItem("username")
+    );
+    const reqObj = { username: sessionStorage.getItem("username"), bookId: id };
+    addToCartRequest(reqObj);
+  }
+}
+function removeFromCart(e) {
+  console.log(e.target);
+  let id = e.target.getAttribute("id").split("-")[0];
+  reqObject = {
+    username: sessionStorage.getItem("username"),
+    bookId: id,
+  };
+  console.log(document.querySelector("#text-" + id));
+  console.log(reqObject);
+  removeFromCartRequest(reqObject);
+}
+
+async function removeFromCartRequest(reqObj) {
+  console.log(reqObj);
+
+  const response = await fetch("http://localhost:5000/cart/removefromcart", {
+    method: "POST",
+    header: {
+      "Content-Type": "application/json",
+      authorization: "bearer " + sessionStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify(reqObj),
+  });
+  const data = await response.json();
+  console.log(data);
+
+  // fetch("http://localhost:5000/cart/removefromcart", {
+  //   method: "POST",
+  //   header: {
+  //     "Content-Type": "application/json",
+  //     authorization: "bearer " + sessionStorage.getItem("accessToken"),
+  //   },
+  //   body: JSON.stringify(reqObj),
+  // })
+  //   .then((res) => res.json())
+  //   .then((data) => console.log(data));
+}
+
+async function addToCartRequest(objBody) {
+  const response = await fetch("http://localhost:5000/cart/addtocart", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify(objBody),
+  });
+  const data = await response.json();
+  console.log(data.cart);
+}
 
 async function showMyCartItems() {
   document.getElementById("cart-display").innerHTML = "";
@@ -381,7 +435,7 @@ async function showMyCartItems() {
     },
   });
   const data = await response.json();
-  console.log(data.cart);
+  // console.log(data.cart);
   allBooksDisplay.style.opacity = "30%";
   document.getElementById("cart-display").style.display = "block";
   let priceCart = 0;
@@ -389,12 +443,14 @@ async function showMyCartItems() {
     getBookById(bookId).then((forDisplay) => {
       displayBooksOnCart(forDisplay);
 
-      priceCart += forDisplay.price;
+      priceCart += parseInt(forDisplay.price);
+
+      totalPrice.innerHTML = `<h2><i>Your Total=<i>$${priceCart}</h2>`;
     });
   });
 
   let totalPrice = document.createElement("p");
-  totalPrice.innerHTML = `${priceCart}`;
+
   document.getElementById("cart-display").appendChild(totalPrice);
 }
 
@@ -408,7 +464,7 @@ async function checkCart() {
   });
   const data = await response.json();
   console.log(data.cart);
-  if (data.cart.length > 0) {
+  if (data.cart.length > 0 && loginPage !== true) {
     cartItems.style.display = "block";
     cartItems.innerHTML = data.cart.length;
   } else {
@@ -418,7 +474,23 @@ async function checkCart() {
 
 function displayBooksOnCart(bookObj) {
   let textDisplay = document.createElement("p");
+  let removeButton = document.createElement("button");
+
   textDisplay.innerHTML = `-<b> ${bookObj.title}</b>, by ${bookObj.author} - $${bookObj.price}`;
 
+  textDisplay.setAttribute("class", `text-${bookObj._id}`);
+  textDisplay.id = `text-${bookObj._id}`;
+  console.log(textDisplay.id);
+  removeButton.innerHTML = "X";
+  removeButton.setAttribute("class", "remove-cart btn btn-danger inline");
+  removeButton.id = bookObj._id + "-remove";
+  // console.log(bookObj._id);
+  removeButton.style.margin = "10px";
+
+  textDisplay.appendChild(removeButton);
   document.getElementById("cart-display").appendChild(textDisplay);
+}
+
+function showOrderHistory() {
+  alert("hi");
 }

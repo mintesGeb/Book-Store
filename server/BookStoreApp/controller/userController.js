@@ -9,8 +9,10 @@ exports.addToCart = (req, res, next) => {
   res.json({ cart: userUpdated.cart });
 };
 exports.removeFromCart = (req, res, next) => {
+  console.log(req.body);
   User.removeFromCart(req.body.username, req.body.bookId);
   let userUpdated = User.showUser(req.body.username);
+  // console.log(userUpdated.cart);
   res.json({ cart: userUpdated.cart });
 };
 exports.showCart = (req, res, next) => {
