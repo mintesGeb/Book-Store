@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Our Book-Store</title>
+
+    <link href="./resources/bootstrap.min.css" rel="stylesheet">
+    <link href="./resources/carousel.css" rel="stylesheet">
+    <!-- <script src="./resources/bootstrap.bundle.min.js"></script> -->
+    <script src="./script.js" defer></script>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a id="home" class="navbar-brand" href="#">Our Book-Store</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <!-- <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#" id="nav-home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        </li> -->
+                    </ul>
+                    <form id="loginForm">
+                        <input class="form-control me-2" placeholder="Username" id="username" value="mintes">
+                        <input class="form-control me-2" type="password" placeholder="Password" id="password" value="mintes123">
+                        <button class="btn btn-outline-success" type="submit" id="loginBtn">Login</button>
+                    </form>
+                    <span id="loginErrorMsg"></span>
+                    <!-- <a id="cart" href="">C</a> -->
+                    <!-- <button class="btn btn-outline-success" id="cart"><img src="" alt=""></button> -->
+                    <a id="greeting" href=""></a>
+                    <button class="btn btn-outline-success" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main id="welcome">
+        <br>
+        <div >
+
+            <img id="cart-img" src="./resources/images/noun_cart_2443909.png" alt="">
+            <p id="cart-items"></p>
+            
+            <p id="priceSum"></p>
+            <!-- <img id="placeOrder" src="./resources/images/noun_Shopping Bag_4068191.png"> -->
+            <Button class="btn btn-outline-primary" id="place-orders">Place Orders</Button>
+            <div id="cart-display">
+                
+            </div>
+            
+            <Button class="btn btn-outline-primary" id="order-btn">Show Orders</Button>
+        </div>
+        <div id="search">
+            
+            <input type="text" id="search-by-id" placeholder="Search by ID">
+            <button type="submit" class="btn btn-primary" id="search-btn">Search</button>
+        </div>
+            <div  class="container">
+            <h1 id="welcome-msg">Welcome to Our Book-Store</h1>
+            
+        </div>
+        <div id="signup-form">
+            <form class="row g-3 "style="margin: 50px; ">
+                <p>Sign Up </p>
+                <div class="col-auto">
+                    <input type="text" class="form-control" id="inputUserName2" placeholder="User Name">
+                </div>
+
+                <div class="col-auto">
+                    <input type="text"class="form-control"id="inputFullName2"placeholder="Full Name">
+                </div>
+                <div class="col-auto">
+                    <input type="password"class="form-control"id="inputPassword2"placeholder="Password">
+                </div>
+                    <div class="col-auto">
+                    <button type="submit"class="btn btn-primary mb-3" id = "signup-btn">Create Account</button>
+                </div>
+            </form>
+            <p id="signUpMsg"></p>
+        </div>
+    </main>
+    <div id="display-area">
+        
+    </div>
+    <main id="shopping">
+        <br>
+        <div class="container marketing">
+            
+            <div id="books-display" class="row">
+            </div>
+
+            <hr class="featurette-divider">
+
+            <div id="up-del-btn-div">
+
+                <input type="text" id="delete-update-id" placeholder="enter id">
+                <span id="enter-id-msg">Please enter an ID</span><br>
+                <button type="submit" class="btn btn-primary" id="book-add-btn">Add</button>
+
+                <button type="submit" class="btn btn-primary" id="book-delete-btn">Delete</button>
+                <button type="submit" class="btn btn-primary" id="book-update-btn">Update</button><br>
+            </div>
+            <div class="row featurette" id="info-form">
+                <div class="col-md-12">
+                        
+                    <h2 class="featurette-heading" id="product-heading">Add a new Book</h2>
+                    <p class="lead">
+                        <form id="product-form">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title">
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="author" class="form-label">Author</label>
+                                <input type="text" class="form-control" id="author">
+                            </div>
+                            <div class="mb-3">
+                                <label for="isbn" class="form-label">ISBN</label>
+                                <input type="text" class="form-control" id="isbn">
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="number" class="form-control" id="price">
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" rows="3"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" id="book-submit-btn">Submit</button>
+                        </form>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

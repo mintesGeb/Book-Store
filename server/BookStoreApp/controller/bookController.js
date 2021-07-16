@@ -5,7 +5,9 @@ const save = (req, res, next) => {
     null,
     req.body.title,
     req.body.author,
-    req.body.isbn
+    req.body.isbn,
+    req.body.price,
+    req.body.description
   );
   res.json({ result: newBook.save() });
 };
@@ -24,7 +26,9 @@ const updateProductByID = (req, res, next) => {
     req.params.id,
     req.body.title,
     req.body.author,
-    req.body.isbn
+    req.body.isbn,
+    req.body.price,
+    req.body.description
   );
   res.json({ result: bookUpdate.update(req.params.id) });
 };
