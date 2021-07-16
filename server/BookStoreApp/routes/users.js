@@ -8,6 +8,10 @@ router.post("/user/signup", userController.signUp);
 
 router.post("/cart/addtocart", userController.addToCart);
 
+router.post("/order", userController.addOrderHistory);
+
+router.get("/order/:id", userController.showOrderHistory);
+
 router.get("/cart/:id", userController.showCart);
 
 router.post("/cart/removefromcart", userController.removeFromCart);

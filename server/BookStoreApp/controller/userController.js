@@ -20,6 +20,16 @@ exports.showCart = (req, res, next) => {
   res.json({ cart: user.cart });
 };
 
+exports.addOrderHistory = (req, res, next) => {
+  User.placeOrder(req.body.username);
+  res.status(404).json({ status: "Thank you for your purchase" });
+};
+
+exports.showOrderHistory = (req, res, next) => {
+  let user = User.showUser(req.params.id);
+  res.json({ orderHistory: user.Order });
+};
+
 exports.signUp = (req, res, next) => {
   let newUser = new User(
     null,

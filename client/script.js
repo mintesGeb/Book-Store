@@ -38,7 +38,10 @@ const cartItems = document.getElementById("cart-items");
 
 const welcome = document.getElementById("welcome");
 
-const orderBtn = document.getElementById("order-btn");
+const showOrders = document.getElementById("order-btn");
+
+const placeOrders = document.getElementById("place-orders");
+
 let activeForm;
 
 let loginPage;
@@ -57,6 +60,7 @@ function displayHomePage() {
   cartItems.style.display = "block";
   document.getElementById("welcome-msg").innerHTML =
     "<h1>Our list of Books </h1>";
+  document.getElementById("signup-form").style.display = "none";
 }
 
 function displayLoginPage() {
@@ -70,6 +74,8 @@ function displayLoginPage() {
   cartItems.style.display = "none";
   document.getElementById("welcome-msg").innerHTML =
     "<h1>Welcome to our book store</h1>";
+  showOrders.style.display = "none";
+  document.getElementById("signup-form").style.display = "block";
 }
 
 function showForm() {
@@ -77,6 +83,8 @@ function showForm() {
 }
 
 window.onload = function () {
+  document.getElementById("signup-btn").onclick = postData;
+  placeOrders.style.display = "none";
   checkCart();
   document.getElementById("cart-display").style.display = "none";
   if (sessionStorage.getItem("accessToken")) {
@@ -106,6 +114,7 @@ window.onload = function () {
     }
   };
   window.onclick = (e) => {
+    // placeOrders.style.display = "none";
     document.getElementById("cart-display").style.display = "none";
     allBooksDisplay.style.opacity = "100%";
     if (e.target.getAttribute("class") == "book-icon") {
@@ -114,6 +123,8 @@ window.onload = function () {
       addToCart(e);
     } else if (e.target.getAttribute("class").split(" ")[0] == "remove-cart") {
       removeFromCart(e);
+    } else {
+      // location.reload();
     }
   };
 
@@ -145,8 +156,35 @@ window.onload = function () {
   };
   cartImg.onclick = showMyCartItems;
 
-  orderBtn.onclick = showOrderHistory;
+  showOrders.onclick = showOrderHistory;
+  placeOrders.onclick = orderItems;
 };
+
+async function postData() {
+  const url = "http://localhost:5000/user/signup";
+  console.log("data");
+  const options = {
+    username: document.getElementById("inputUserName2").value,
+    fullname: document.getElementById("inputFullName2").value,
+    password: document.getElementById("inputPassword2").value,
+  };
+  event.preventDefault();
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(options),
+  });
+  const datanew = await response.json();
+  if (datanew) {
+    (document.getElementById("inputUserName2").value = null),
+      (document.getElementById("inputFullName2").value = null),
+      (document.getElementById("inputPassword2").value = null),
+      (document.getElementById("signUpMsg").innerHTML =
+        "Thank you for Signing up!");
+  }
+}
 
 async function login() {
   event.preventDefault();
@@ -382,7 +420,7 @@ function removeFromCart(e) {
     bookId: id,
   };
   console.log(document.querySelector("#text-" + id));
-  console.log(reqObject);
+  // console.log(reqObject);
   removeFromCartRequest(reqObject);
 }
 
@@ -391,12 +429,13 @@ async function removeFromCartRequest(reqObj) {
 
   const response = await fetch("http://localhost:5000/cart/removefromcart", {
     method: "POST",
-    header: {
+    headers: {
       "Content-Type": "application/json",
       authorization: "bearer " + sessionStorage.getItem("accessToken"),
     },
     body: JSON.stringify(reqObj),
   });
+
   const data = await response.json();
   console.log(data);
 
@@ -426,6 +465,7 @@ async function addToCartRequest(objBody) {
 }
 
 async function showMyCartItems() {
+  placeOrders.style.display = "block";
   document.getElementById("cart-display").innerHTML = "";
   let user = sessionStorage.getItem("username");
   const response = await fetch(`http://localhost:5000/cart/${user}`, {
@@ -491,6 +531,56 @@ function displayBooksOnCart(bookObj) {
   document.getElementById("cart-display").appendChild(textDisplay);
 }
 
-function showOrderHistory() {
-  alert("hi");
+async function showOrderHistory() {
+  console.log("show");
+  const userID = sessionStorage.getItem("username");
+  let history = await fetch(`http://localhost:5000/order/${userID}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: "bearer " + sessionStorage.getItem("accessToken"),
+    },
+  });
+  const data = await history.json();
+  console.log(data.orderHistory);
+  displayOrderHistory(data.orderHistory);
+}
+function displayOrderHistory(arr) {
+  let listOfOrders = [];
+  let p = document.createElement("p");
+  document.getElementById("cart-display").style.display = "block";
+  document.getElementById("cart-display").innerHTML = "";
+  let output = "";
+
+  arr.forEach((order) => {
+    order.forEach((bookID) => {
+      getBookById(bookID).then((book) => {
+        // console.log(book);
+        output += `${book.title} ${book.price},\n`;
+        console.log(output);
+        p.innerHTML = `${output}\n`;
+      });
+    });
+    document.getElementById("cart-display").appendChild(p);
+  });
+}
+async function orderItems() {
+  console.log("order");
+  const userObj = { username: sessionStorage.getItem("username") };
+  let orderHistory = await fetch("http://localhost:5000/order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: "bearer " + sessionStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify(userObj),
+  });
+  const data = await orderHistory.json();
+  console.log(data.status);
+  document.getElementById("cart-display").style.display = "block";
+  document.getElementById("cart-display").innerHTML = data.status;
+  setTimeout(() => {
+    document.getElementById("cart-display").style.display = "none";
+    document.getElementById("cart-display").innerHTML = "";
+  }, 3000);
 }

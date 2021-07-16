@@ -35,9 +35,21 @@ class User {
     const index = users.findIndex((user) => user.username == uName);
     users[index].cart = users[index].cart.filter((item) => item !== book);
   }
-  static order(uName) {}
+
   static showUser(uName) {
     return users.find((user) => user.username == uName);
+  }
+  static placeOrder(uName) {
+    const index = users.findIndex((user) => user.username == uName);
+    if (users[index].cart.length == 0) {
+      throw new Error("You can't place an order. Your cart is empty");
+      // return "please dont";
+    }
+    users[index].Order.push(users[index].cart);
+    users[index].cart = [];
+  }
+  static showUserById(id) {
+    return users.find((user) => user.id == id);
   }
 }
 

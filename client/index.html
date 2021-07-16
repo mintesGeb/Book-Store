@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Rujuan Xing">
+    
     <title>Our Book-Store</title>
 
     <link href="./resources/bootstrap.min.css" rel="stylesheet">
@@ -24,7 +24,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#" id="nav-home">Home</a>
                         </li>
                         <li class="nav-item">
@@ -32,7 +32,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                        </li>
+                        </li> -->
                     </ul>
                     <form id="loginForm">
                         <input class="form-control me-2" placeholder="Username" id="username" value="mintes">
@@ -57,10 +57,13 @@
             <p id="cart-items"></p>
             
             <p id="priceSum"></p>
+            <!-- <img id="placeOrder" src="./resources/images/noun_Shopping Bag_4068191.png"> -->
+            <Button class="btn btn-outline-primary" id="place-orders">Place Orders</Button>
             <div id="cart-display">
                 
             </div>
-            <Button class="btn btn-outline-primary" id="order-btn">Orders</Button>
+            
+            <Button class="btn btn-outline-primary" id="order-btn">Show Orders</Button>
         </div>
         <div id="search">
             
@@ -70,6 +73,25 @@
             <div  class="container">
             <h1 id="welcome-msg">Welcome to Our Book-Store</h1>
             
+        </div>
+        <div id="signup-form">
+            <form class="row g-3 "style="margin: 50px; ">
+                <p>Sign Up </p>
+                <div class="col-auto">
+                    <input type="text" class="form-control" id="inputUserName2" placeholder="User Name">
+                </div>
+
+                <div class="col-auto">
+                    <input type="text"class="form-control"id="inputFullName2"placeholder="Full Name">
+                </div>
+                <div class="col-auto">
+                    <input type="password"class="form-control"id="inputPassword2"placeholder="Password">
+                </div>
+                    <div class="col-auto">
+                    <button type="submit"class="btn btn-primary mb-3" id = "signup-btn">Create Account</button>
+                </div>
+            </form>
+            <p id="signUpMsg"></p>
         </div>
     </main>
     <div id="display-area">

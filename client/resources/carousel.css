@@ -145,6 +145,13 @@ body {
   color: orange;
   margin-right: 20px;
 }
+#place-orders {
+  /* width: 50px;
+  height: 50px; */
+  position: absolute;
+  left: 68%;
+  top: 150px;
+}
 #cart-img {
   /* border: solid black 1px; */
   width: 50px;
@@ -166,7 +173,7 @@ body {
   width: 380px;
   height: 40%;
   position: absolute;
-  left: 50%;
+  left: 45%;
   padding: 20px;
 }
 #cart-items {
