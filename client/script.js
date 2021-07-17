@@ -114,7 +114,7 @@ window.onload = function () {
     }
   };
   window.onclick = (e) => {
-    // placeOrders.style.display = "none";
+    placeOrders.style.display = "none";
     document.getElementById("cart-display").style.display = "none";
     allBooksDisplay.style.opacity = "100%";
     if (e.target.getAttribute("class") == "book-icon") {
@@ -478,6 +478,7 @@ async function showMyCartItems() {
   // console.log(data.cart);
   allBooksDisplay.style.opacity = "30%";
   document.getElementById("cart-display").style.display = "block";
+  placeOrders.style.display = "block";
   let priceCart = 0;
   data.cart.forEach((bookId) => {
     getBookById(bookId).then((forDisplay) => {
