@@ -64,5 +64,7 @@ Logout
 [Henok, Daniel: Clearing token from storage history and loading the signup and sign in page.] 
 
  
+ 
+ Thank You
 
  
