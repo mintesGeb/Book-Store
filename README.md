@@ -1,7 +1,9 @@
 # Book-Store
 GroupProject: Server and Client Side
 
-CS477 Final Project Report  
+Project Report  
+
+Collaborators
 
 Mintesinot Gebre(Leader) 
 Meron Kiflmariam 
@@ -10,7 +12,7 @@ Daniel Hagos
 Tam Nguyen 
 Henok Hamito 
 
- General Comment 
+General Comment 
 
 We believe , we have incorporated all the requirements for this project and even pushed a bit more. But, Of course, it is far from being complete and there is still a huge room for improvement, especially, on the front end. User interface needs a lot of brushing up. Displaying error messages in a user friendly manner is where we felt like we lacked somehow. We will continue to develop it , now that we have all the framework and structure ready. And detail report follows: 
 
